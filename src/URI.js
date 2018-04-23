@@ -10,27 +10,32 @@
  *   MIT License http://www.opensource.org/licenses/mit-license
  *
  */
-(function (root, factory) {
+// (function (root, factory) {
+//   'use strict';
+//   // https://github.com/umdjs/umd/blob/master/returnExports.js
+//   if (typeof module === 'object' && module.exports) {
+//     // Node
+//     module.exports = factory(require('./punycode'), require('./IPv6'), require('./SecondLevelDomains'));
+//   } else if (typeof define === 'function' && define.amd) {
+//     // AMD. Register as an anonymous module.
+//     define(['./punycode', './IPv6', './SecondLevelDomains'], factory);
+//   } else {
+//     // Browser globals (root is window)
+//     root.URI = factory(root.punycode, root.IPv6, root.SecondLevelDomains, root);
+//   }
+// }(this, function (punycode, IPv6, SLD, root) {
   'use strict';
-  // https://github.com/umdjs/umd/blob/master/returnExports.js
-  if (typeof module === 'object' && module.exports) {
-    // Node
-    module.exports = factory(require('./punycode'), require('./IPv6'), require('./SecondLevelDomains'));
-  } else if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define(['./punycode', './IPv6', './SecondLevelDomains'], factory);
-  } else {
-    // Browser globals (root is window)
-    root.URI = factory(root.punycode, root.IPv6, root.SecondLevelDomains, root);
-  }
-}(this, function (punycode, IPv6, SLD, root) {
-  'use strict';
+
+  var punycode = require('./punycode');
+  var IPv6 = require('./IPv6');
+  var SLD = null;
+
   /*global location, escape, unescape */
   // FIXME: v2.0.0 renamce non-camelCase properties to uppercase
   /*jshint camelcase: false */
 
   // save current URI variable, if any
-  var _URI = root && root.URI;
+  var _URI;
 
   function URI(url, base) {
     var _urlSupplied = arguments.length >= 1;
@@ -1098,31 +1103,31 @@
   };
 
   // noConflict
-  URI.noConflict = function(removeAll) {
-    if (removeAll) {
-      var unconflicted = {
-        URI: this.noConflict()
-      };
+  // URI.noConflict = function(removeAll) {
+  //   if (removeAll) {
+  //     var unconflicted = {
+  //       URI: this.noConflict()
+  //     };
 
-      if (root.URITemplate && typeof root.URITemplate.noConflict === 'function') {
-        unconflicted.URITemplate = root.URITemplate.noConflict();
-      }
+  //     if (root.URITemplate && typeof root.URITemplate.noConflict === 'function') {
+  //       unconflicted.URITemplate = root.URITemplate.noConflict();
+  //     }
 
-      if (root.IPv6 && typeof root.IPv6.noConflict === 'function') {
-        unconflicted.IPv6 = root.IPv6.noConflict();
-      }
+  //     if (root.IPv6 && typeof root.IPv6.noConflict === 'function') {
+  //       unconflicted.IPv6 = root.IPv6.noConflict();
+  //     }
 
-      if (root.SecondLevelDomains && typeof root.SecondLevelDomains.noConflict === 'function') {
-        unconflicted.SecondLevelDomains = root.SecondLevelDomains.noConflict();
-      }
+  //     if (root.SecondLevelDomains && typeof root.SecondLevelDomains.noConflict === 'function') {
+  //       unconflicted.SecondLevelDomains = root.SecondLevelDomains.noConflict();
+  //     }
 
-      return unconflicted;
-    } else if (root.URI === this) {
-      root.URI = _URI;
-    }
+  //     return unconflicted;
+  //   } else if (root.URI === this) {
+  //     root.URI = _URI;
+  //   }
 
-    return this;
-  };
+  //   return this;
+  // };
 
   p.build = function(deferBuild) {
     if (deferBuild === true) {
@@ -2334,5 +2339,7 @@
     return this;
   };
 
-  return URI;
-}));
+  module.exports = URI;
+
+//   return URI;
+// }));
